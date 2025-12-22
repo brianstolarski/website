@@ -6,7 +6,6 @@
     <title>Merry Christmas!</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS Styling --- */
         body {
             display: flex;
             flex-direction: column;
@@ -14,14 +13,14 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #f0f8ff; /* Snowy Blue Background */
+            background-color: #f0f8ff;
             font-family: 'Comic Neue', cursive;
             text-align: center;
-            overflow: hidden; /* Prevents scrollbars if button moves too far */
+            overflow: hidden;
         }
 
         h1 {
-            color: #c62828; /* Christmas Red */
+            color: #c62828;
             margin-bottom: 40px;
             font-size: 3.5em;
             font-family: 'Comic Neue', cursive;
@@ -33,7 +32,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Key: Set a fixed size and relative position for the moving button */
             width: 400px;
             height: 150px;
             position: relative;
@@ -48,11 +46,10 @@
             font-weight: bold;
         }
 
-        /* Styling for the 'Yes' button */
         #yes-btn {
-            background-color: #2e7d32; /* Christmas Green */
+            background-color: #2e7d32;
             color: white;
-            z-index: 10; /* Keep it on top */
+            z-index: 10;
         }
 
         #yes-btn:hover {
@@ -60,14 +57,11 @@
             transform: scale(1.05);
         }
 
-        /* Styling for the 'No' button */
         #no-btn {
-            background-color: #c62828; /* Christmas Red */
+            background-color: #c62828;
             color: white;
-            /* Key: Absolute positioning allows it to move relative to the container */
             position: absolute;
-            transition: 0.0s ease; /* Smooth transition */
-            /* Initial position is set by JS below, but this is a fallback */
+            transition: 0.0s ease;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
@@ -76,13 +70,13 @@
         .message-container {
             margin-top: 50px;
             font-size: 1.8em;
-            color: #2e7d32; /* Christmas Green */
+            color: #2e7d32;
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .food-container {
-            display: none; /* Hidden by default */
+            display: none;
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
@@ -121,23 +115,21 @@
     <div id="food-options" class="food-container">
         <button class="food-btn" onclick="selectFood('wingstop')">wingstop</button>
         <button class="food-btn" onclick="selectFood('sushi')">sushi</button>
-        <button class="food-btn" onclick="selectFood('triple dipper')">triple dipper</button>
-        <button class="food-btn" onclick="selectFood('mystery surprise')">mystery surprise</button>
+        <button class="food-btn" onclick="selectFood('the triple dipper')">triple Dipper</button>
+        <button class="food-btn" onclick="selectFood('the mystery surprise')">mystery Surprise</button>
     </div>
 
     <button id="restart-btn" class="button" onclick="restart()" style="display: none; margin-top: 20px; background-color: #2196F3; color: white;">i change my mind</button>
 
 <script>
-    /* --- JavaScript Logic for IMPOSSIBLE Avoidance --- */
     const noBtn = document.getElementById('no-btn');
     const yesBtn = document.getElementById('yes-btn');
     const messageDiv = document.getElementById('message');
     const foodOptions = document.getElementById('food-options');
     const restartBtn = document.getElementById('restart-btn');
 
-    // Function to run when 'Yes' is clicked
     function handleYes() {
-        messageDiv.textContent = "oh baby i knew youd say yes";
+        messageDiv.textContent = "Oh baby, I knew you'd say yes!";
         
         const img = document.createElement('img');
         img.src = 'cat-jump.gif';
@@ -148,7 +140,6 @@
         noBtn.style.display = 'none'; 
         yesBtn.style.pointerEvents = 'none';
         
-        // Show food options
         foodOptions.style.display = 'flex';
 
         const audio = new Audio('yipee.mp3');
@@ -156,10 +147,9 @@
     }
 
     function selectFood(food) {
-        messageDiv.textContent = "oh baby were getting " + food + "!!!!!!!! " +  "send me a screenshot of your choice";
-        foodOptions.style.display = 'none'; // Hide options after selection
+        messageDiv.textContent = "oh baby, we're getting " + food + "!!!!!!!! " + "send me a screenshot of your choice!!!!";
+        foodOptions.style.display = 'none';
         
-        // Re-add the image because textContent cleared it
         const img = document.createElement('img');
         img.src = 'cat-jump.gif';
         img.style.display = 'block';
@@ -170,14 +160,12 @@
     }
 
     function restart() {
-        // Reset UI
         messageDiv.textContent = '';
         noBtn.style.display = 'block';
         yesBtn.style.pointerEvents = 'auto';
         foodOptions.style.display = 'none';
         restartBtn.style.display = 'none';
         
-        // Reset No button position
         noBtn.style.position = 'absolute';
         noBtn.style.right = '10px';
         noBtn.style.top = '50%';
@@ -185,51 +173,41 @@
         noBtn.style.transform = 'translateY(-50%)';
     }
 
-    // --- Core Movement Logic ---
     function moveButton(e) {
-        // Prevent default behavior (especially for touch) to stop clicks
         if (e && (e.type === 'touchstart' || e.type === 'click')) {
             e.preventDefault();
         }
 
-        // Get viewport dimensions
         const maxWidth = window.innerWidth - noBtn.offsetWidth;
         const maxHeight = window.innerHeight - noBtn.offsetHeight;
 
-        // Calculate random position
         const randomX = Math.random() * maxWidth;
         const randomY = Math.random() * maxHeight;
 
-        // Apply new position
-        noBtn.style.position = 'fixed'; // Switch to fixed to move freely on screen
+        noBtn.style.position = 'fixed';
         noBtn.style.left = randomX + 'px';
         noBtn.style.top = randomY + 'px';
         
-        // Reset transform to avoid conflicts with initial centering
         noBtn.style.transform = 'none';
     }
 
-    // Trigger on mouseover (desktop), touchstart (mobile), and click (fallback)
     noBtn.addEventListener('mouseover', moveButton);
     noBtn.addEventListener('touchstart', moveButton, { passive: false });
     noBtn.addEventListener('click', moveButton);
     noBtn.addEventListener('mousedown', moveButton);
-    noBtn.addEventListener('focus', moveButton); // For keyboard navigation
+    noBtn.addEventListener('focus', moveButton);
     noBtn.addEventListener('click', moveButton);
 
-    // Initial setup for button positions (unchanged, but now uses the larger container)
     window.onload = () => {
-         // Position 'Yes' button on the left edge of the container
         yesBtn.style.position = 'absolute';
         yesBtn.style.left = '10px';
         yesBtn.style.top = '50%';
         yesBtn.style.transform = 'translateY(-50%)';
 
-        // Position 'No' button on the right edge of the container initially
         noBtn.style.position = 'absolute';
         noBtn.style.right = '10px';
         noBtn.style.top = '50%';
-        noBtn.style.left = 'auto'; // Clear left setting
+        noBtn.style.left = 'auto';
         noBtn.style.transform = 'translateY(-50%)';
     };
 
